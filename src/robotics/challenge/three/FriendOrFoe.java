@@ -1,73 +1,20 @@
 package robotics.challenge.three;
 
+import lejos.hardware.port.SensorPort;
+import lejos.robotics.SampleProvider;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
+
+//ColorId 3.00 RED
+//ColorId 1.00 BLUE
 
 public class FriendOrFoe {
 
 	public static void main(String[] args) {
-	Behavior roamIsland = new Behavior() {
-			
-			@Override
-			public boolean takeControl() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			
-			@Override
-			public void suppress() {
-				//suppressed = true
-				
-			}
-			
-			@Override
-			public void action() {
-				//randomly roam the island
-				
-			}
-		};
+		Behavior roamIsland = new roamIsland();
+		Behavior beach = new beach(SensorPort.S1);
 		
-		Behavior beach = new Behavior() {
-			
-			@Override
-			public boolean takeControl() {
-				//one the beach
-				return false;
-			}
-			
-			@Override
-			public void suppress() {
-				//suppressed = true
-				
-			}
-			
-			@Override
-			public void action() {
-				//back away from the beach
-				
-			}
-		};
-		
-		Behavior redPillar = new Behavior() {
-			
-			@Override
-			public boolean takeControl() {
-				//see redPillar
-				return false;
-			}
-			
-			@Override
-			public void suppress() {
-				//suppressed = true
-				
-			}
-			
-			@Override
-			public void action() {
-				//kill behavior (trow in the sea)
-				
-			}
-		};
+		Behavior redPillar = new redPillar(SensorPort.S3);
 		
 		Behavior bluePillar = new Behavior() {
 			
@@ -90,7 +37,8 @@ public class FriendOrFoe {
 			}
 		};
 		
-		Behavior [] bArray = {roamIsland,beach, redPillar, bluePillar};
+		Behavior [] bArray = {redPillar};
+		//Behavior [] bArray = {roamIsland,beach, redPillar, bluePillar};
 		
 		Arbitrator arby = new Arbitrator(bArray);
 		
