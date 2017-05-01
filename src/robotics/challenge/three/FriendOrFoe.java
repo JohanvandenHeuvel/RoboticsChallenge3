@@ -11,10 +11,10 @@ import lejos.robotics.subsumption.Behavior;
 public class FriendOrFoe {
 
 	public static void main(String[] args) {
-		Behavior roamIsland = new roamIsland();
+		Behavior roamIsland = new roamIsland(SensorPort.S3);
 		Behavior beach = new beach(SensorPort.S1);
 		
-		Behavior redPillar = new redPillar(SensorPort.S3);
+		Behavior redPillar = new redPillar(SensorPort.S4);
 		
 		Behavior bluePillar = new Behavior() {
 			
