@@ -12,13 +12,6 @@ import lejos.robotics.subsumption.Behavior;
 
 public class roamIsland implements Behavior{
 	boolean suppressed = false;
-	boolean touched = false;
-	
-	EV3TouchSensor touch;
-	
-	public roamIsland(Port port) {
-		touch = new EV3TouchSensor(port);
-	}
 	
 	@Override
 	public boolean takeControl() {
