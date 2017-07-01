@@ -22,14 +22,26 @@ public class Challenge3 {
 		
 		//Sensors
 		EV3ColorSensor color = new EV3ColorSensor(SensorPort.S1);
+		System.out.println("Color loaded..");
 		EV3GyroSensor gyro = new EV3GyroSensor(SensorPort.S3);
-		EV3UltrasonicSensor sonic = new EV3UltrasonicSensor(SensorPort.S4);
+		System.out.println("Gyro loaded..");
+		EV3UltrasonicSensor sonic = new EV3UltrasonicSensor(SensorPort.S2);
+		System.out.println("Sonic loaded..");
+		System.out.println("Sensors loaded..");
 		
 		//Behaviors
-		Behavior FindPillar = new FindPillar(color, sonic);
+		Behavior FindPillar = new FindPillar(gyro, color, sonic);
+		System.out.println("FindPillar loaded..");
+		Behavior Hostile = new Hostile(color, gyro);
+		System.out.println("Hostile loaded..");
+		Behavior Friendly = new Friendly(color, gyro);
+		System.out.println("Friendly loaded..");
+		Behavior AvoidBeach = new AvoidBeach(color, gyro);
+		System.out.println("AvoidBeach loaded..");
+		System.out.println("Behaviors loaded..");
 		
 		//Arbitrator
-		Behavior [] bArray = {FindPillar};
+		Behavior [] bArray = {FindPillar, Hostile, Friendly, AvoidBeach};
 		Arbitrator arbitrator = new Arbitrator(bArray);
 		arbitrator.start();
 
