@@ -6,38 +6,44 @@ import lejos.hardware.ev3.EV3;
 import lejos.hardware.motor.Motor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3GyroSensor;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
 import lejos.utility.Stopwatch;
 
 /**
- * Hostile behavior.
+ * Friendly Behavior.
  * @author johan
  *
  */
 public class Hostile implements Behavior{
 	boolean suppressed;
+	boolean inRange = false;
 	
 	EV3GyroSensor gyro;
 	EV3ColorSensor color;
+	EV3UltrasonicSensor sonic;
 	
+	final int RED = 0;
+	final int BLUE = 2;
 	final double THRESHOLD = 0.15;
 	final int SPEED = 150;
 	
-	public Hostile(EV3ColorSensor color, EV3GyroSensor gyro)
+	public Hostile(EV3ColorSensor color, EV3GyroSensor gyro, EV3UltrasonicSensor sonic)
 	{
 		suppressed = false;
 		this.color = color;
 		this.gyro = gyro;
+		this.sonic = sonic;
 	}
 	
 	@Override
 	public boolean takeControl() 
 	{
-		return true;
-//		float sampleColor = readColorRedMode();
-//		return sampleColor > THRESHOLD;
+//		return true;
+		inRange = readUltraSonic() < THRESHOLD;
+		return inRange && readColorIDMode() == RED;
 	}
 	
 	@Override
@@ -51,10 +57,18 @@ public class Hostile implements Behavior{
 		suppressed = false;
 	}
 	
-	public float readColorRedMode()
+	public float readColorIDMode()
 	{
 		float[] sample = new float[1];
-		SampleProvider sampleProvider = color.getRedMode();
+		SampleProvider sampleProvider = color.getColorIDMode();
+		sampleProvider.fetchSample(sample, 0);
+		return sample[0];
+	}
+	
+	public float readUltraSonic()
+	{
+		float[] sample = new float[1];
+		SampleProvider sampleProvider = sonic.getDistanceMode();
 		sampleProvider.fetchSample(sample, 0);
 		return sample[0];
 	}
@@ -123,28 +137,31 @@ public class Hostile implements Behavior{
 	{
 		unsuppress();
 		
+		motorsSpeed(SPEED, SPEED);
 		Motor.C.backward();
 		Motor.A.backward();
 		Delay.msDelay(1000);
-		Motor.A.stop(true);
-		Motor.C.stop(true);
+		motorsStop();
 		
 		EV3 ev3 = (EV3) BrickFinder.getDefault();
 		Audio audio = ev3.getAudio();
 		
-		audio.playTone(250, 1000, 80);
-		audio.playTone(265, 1000, 80);
-		audio.playTone(250, 1000, 80);
-		audio.playTone(265, 1000, 80);
+		audio.playTone(440, 125, 80);
+		audio.playTone(392, 125, 80);
+		audio.playTone(440, 500, 80);
+		audio.playTone(294, 500, 80);
+		Delay.msDelay(750);
+		audio.playTone(466, 125, 80);
+		audio.playTone(440, 125, 80);
+		audio.playTone(466,	250, 80);
+		audio.playTone(440, 250, 80);
+		audio.playTone(392, 500, 80);
 		
+		motorsSpeed((int) 1.5 * SPEED,(int) 1.5 * SPEED);
 		Motor.C.forward();
 		Motor.A.forward();
-		Delay.msDelay(1000);
-		Motor.A.stop(true);
-		Motor.C.stop(true);
-		
-		
-		
+		Delay.msDelay(2000);
 		motorsStop();
+
 	}
 }

@@ -32,16 +32,17 @@ public class Challenge3 {
 		//Behaviors
 		Behavior FindPillar = new FindPillar(gyro, color, sonic);
 		System.out.println("FindPillar loaded..");
-		Behavior Hostile = new Hostile(color, gyro);
+		Behavior Hostile = new Hostile(color, gyro, sonic);
 		System.out.println("Hostile loaded..");
-		Behavior Friendly = new Friendly(color, gyro);
+		Behavior Friendly = new Friendly(color, gyro, sonic);
 		System.out.println("Friendly loaded..");
-		Behavior AvoidBeach = new AvoidBeach(color, gyro);
-		System.out.println("AvoidBeach loaded..");
+//		Behavior AvoidBeach = new AvoidBeach(color, gyro);
+//		System.out.println("AvoidBeach loaded..");
 		System.out.println("Behaviors loaded..");
 		
 		//Arbitrator
-		Behavior [] bArray = {FindPillar, Hostile, Friendly, AvoidBeach};
+		Behavior [] bArray = {FindPillar, Hostile, Friendly};
+//		Behavior [] bArray = {Friendly};
 		Arbitrator arbitrator = new Arbitrator(bArray);
 		arbitrator.start();
 
