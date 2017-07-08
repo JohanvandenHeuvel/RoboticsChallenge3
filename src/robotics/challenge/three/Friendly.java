@@ -27,7 +27,7 @@ public class Friendly implements Behavior{
 	
 	final int RED = 0;
 	final int BLUE = 2;
-	final double THRESHOLD = 0.15;
+	final double THRESHOLD = 0.20;
 	final int SPEED = 150;
 	
 	public Friendly(EV3ColorSensor color, EV3GyroSensor gyro, EV3UltrasonicSensor sonic)
